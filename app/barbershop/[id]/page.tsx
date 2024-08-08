@@ -6,7 +6,8 @@ import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-
+import { Barbershop } from "@prisma/client"
+import ServiceItem from "../../_components/service-item"
 interface BarbershopPageProps {
   params: {
     id: string
@@ -19,6 +20,9 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
     where: {
       id: params.id,
     },
+    include: {
+      services: true,
+    }, // traz os servicos da barbearia
   })
   if (!barbershop) {
     return notFound()
@@ -77,6 +81,15 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       <div className="space-y-2 border-b border-solid p-5">
         <h2 className="text-xs font-bold uppercase text-gray-400">Sobre nós</h2>
         <p className="text-justify text-sm">{barbershop?.description}</p>
+      </div>
+      <div className="p-5">
+        <h2 className="text-xs font-bold uppercase text-gray-400">Serviços</h2>
+        <div className="space-y-3">
+          {barbershop.services.map((service) => (
+            <ServiceItem key={service.id} service={service} />
+          ))}{" "}
+          {/* //para cada Barbershopservices que recebe service vai redenrizar um ServiceItem */}
+        </div>
       </div>
     </div>
   )
