@@ -2,12 +2,12 @@ import { db } from "@/app/_lib/prisma"
 import { Button } from "@/app/_components/ui/button"
 // import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet"
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
-
+import PhoneItem from "@/app/_components/phone-item"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { Barbershop } from "@prisma/client"
 import ServiceItem from "../../_components/service-item"
+
 interface BarbershopPageProps {
   params: {
     id: string
@@ -82,7 +82,9 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         <h2 className="text-xs font-bold uppercase text-gray-400">Sobre nós</h2>
         <p className="text-justify text-sm">{barbershop?.description}</p>
       </div>
-      <div className="p-5">
+
+      {/* SERVIÇOS */}
+      <div className="pace-y-3 border-b border-solid p-5">
         <h2 className="text-xs font-bold uppercase text-gray-400">Serviços</h2>
         <div className="space-y-3">
           {barbershop.services.map((service) => (
@@ -90,6 +92,13 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
           ))}{" "}
           {/* //para cada Barbershopservices que recebe service vai redenrizar um ServiceItem */}
         </div>
+      </div>
+
+      {/* CONTATO */}
+      <div className="space-y-3 p-5">
+        {barbershop.phones.map((phone) => (
+          <PhoneItem key={phone} phone={phone} />
+        ))}
       </div>
     </div>
   )
